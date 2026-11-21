@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JobTrack</title>
+<style>
+* { box-sizing: border-box; }
+body { font-family: Arial; margin: 0; background: #eef2f7; display: flex; }
+.sidebar { width: 210px; background: #0f2454; color: white; min-height: 100vh; padding: 20px 15px; }
+.sidebar h2 { margin: 0 0 25px; }
+.sidebar a { display: block; color: #cbd5e1; text-decoration: none; padding: 10px; border-radius: 8px; margin-bottom: 5px; }
+.sidebar a.active { background: #2a4a9a; color: white; }
+.dream { background: #1e3a7a; padding: 12px; border-radius: 10px; margin-top: 25px; text-align: center; font-size: 13px; }
+.main { flex: 1; padding: 20px; }
+.head { display: flex; justify-content: space-between; align-items: center; }
+.head h1 { margin: 0; font-size: 28px; }
+.head p { margin: 5px 0 0; color: #666; }
+.head button { background: #2563eb; color: white; border: none; padding: 10px 14px; border-radius: 8px; }
+.cards { display: flex; gap: 12px; margin: 20px 0; }
+.card { flex: 1; background: white; padding: 15px; border-radius: 10px; }
+.card small { color: #666; }
+.card b { font-size: 26px; display: block; margin-top: 5px; }
+.content { display: flex; gap: 12px; }
+.left { flex: 2; background: white; padding: 15px; border-radius: 10px; }
+.right { flex: 1; background: white; padding: 15px; border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 9px; border-bottom: 1px solid #eee; text-align: left; font-size: 13px; }
+input, select, button { padding: 8px; margin: 3px; border-radius: 6px; border: 1px solid #ccc; }
+form button { background: #2563eb; color: white; border: none; }
+.bar { height: 18px; border-radius: 4px; margin: 4px 0 10px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>JobTrack</h2>
+<a class="active" href="/">Dashboard</a>
+<a href="/">My Applications</a>
+<a href="/">Add Application</a>
+<a href="/">Settings</a>
+<div class="dream">Dream Big<br>You are one step closer to your dream job!</div>
+</div>
+
+<div class="main">
+<div class="head">
+<div><h1>Good morning, Akshata</h1><p>Track your job search in one place.</p></div>
+<form action="/" method="GET"><button>+ Add Application</button></form>
+</div>
+
+<div class="cards">
+<div class="card" style="background:#e8efff;"><small>Total Applications</small><b>{{ total }}</b></div>
+<div class="card" style="background:#e6f7ee;"><small>Interviews</small><b>{{ interviews }}</b></div>
+<div class="card" style="background:#f0e8ff;"><small>Offers</small><b>{{ offers }}</b></div>
+<div class="card" style="background:#ffe8e8;"><small>Rejected</small><b>{{ rejected }}</b></div>
+</div>
+
+<div class="content">
+<div class="left">
+<h3>Recent Applications</h3>
+<form action="/add" method="POST">
+<input name="company" placeholder="Company" required>
+<input name="role" placeholder="Job Role" required>
+<input name="date" type="date" required>
+<select name="status"><option>Applied</option><option>Interview</option><option>Selected</option><option>Rejected</option></select>
+<button>Add Application</button>
+</form>
+<table>
+<tr><th>Company</th><th>Job Role</th><th>Applied Date</th><th>Status</th><th>Actions</th></tr>
+{% for job in jobs %}
+<tr><td>{{ job.company }}</td><td>{{ job.role }}</td><td>{{ job.date }}</td><td>{{ job.status }}</td><td><a href="/delete/{{ loop.index0 }}">Delete</a></td></tr>
+{% endfor %}
+</table>
+<p>Showing {{ total }} applications</p>
+</div>
+
+<div class="right">
+<h3>Application Overview</h3>
+<p>Applied: {{ total - interviews - offers - rejected }}</p><div class="bar" style="background:#2563eb; width:85%;</div>
+<p>Interview: {{ interviews }}</p><div class="bar" style="background:#34a853; width:50%;"></div>
+<p>Offer: {{ offers }}</p><div class="bar" style="background:#9334e6; width:25%;"></div>
+<p>Rejected: {{ rejected }}</p><div class="bar" style="background:#f87171; width:35%;"></div>
+<p><b>Quick Tips</b><br>Keep updating your applications and prepare well for interviews. You got this!</p>
+<p style="text-align:right; color:#7c6cf0;"><i>Better Opportunities Await...</i></p>
+</div>
+</div>
+</div>
+
+</body>
+</html>
